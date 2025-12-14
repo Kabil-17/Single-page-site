@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake Remainder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="title">
+        <h2>Hydrate Your B<img src="./images/svg_324070.svg" alt="water-drop">dy</h2>
+        <div class="water-drop"></div>
+    </div>
+    <div class="body-main">
+        <div class="body-sub">
+            <div class="inputs">
+                <input type="number" placeholder="Weight?" class="input kg">
+                <span>kg</span>
+                <button class="buttons cal" onclick="calculate()">Calculate</button>
+            </div>
+            <br>
+            <div class="bt-input">
+                <button class="buttons bt" data-value="300">+300ml</button>
+                <button class="buttons bt" data-value="250">+250ml</button>
+                <button class="buttons bt" data-value="200">+200ml</button>
+                <button class="buttons bt" data-value="150">+150ml</button>
+            </div>
+            <div class="remainder">
+                <input type="number" class="input timer" placeholder="Reminder(min)">
+                <button class="buttons set">Set</button>
+                <button class="buttons reset">Reset</button>
+            </div>
+        </div>
+        <div class="body-sub-sec">
+            <div class="remainder-area">
+                <h4>Remaining Water</h4>
+                <span class="water_needed">0 ml</span>
+                <div class="box">
+                    <div class="s"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
