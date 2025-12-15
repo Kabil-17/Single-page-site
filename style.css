@@ -9,11 +9,10 @@ body {
 }
 .body-main{
     display: grid;
-    grid-template-columns: 1fr 1fr;
     margin-top: 150px;
 }
 .body-sub{
-    border: 0px;
+    border: none;
     border-bottom-left-radius: 30px;
     border-top-right-radius: 30px;
     width: 500px;
@@ -26,9 +25,8 @@ body {
     margin-top: 50px;
     font-size: 50px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
-
     font-family: sans-serif;
-    color: rgb(43, 184, 159);
+    color: rgb(101, 231, 207);
 }
 img{
     height: 45px;
@@ -36,6 +34,7 @@ img{
 .inputs{
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 20px;
 }
 .input{
@@ -46,7 +45,7 @@ img{
     margin-left: 20px;
 }
 .buttons{
-    border-radius:5px;
+    border-radius:8px;
     border-color: rgb(245, 242, 232);
     font-weight: 700;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -64,9 +63,9 @@ img{
 .remainder {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 40px;
     visibility: hidden;
-    height: 0;
     overflow: hidden;
 }
 
@@ -80,7 +79,7 @@ img{
 }
 
 .remainder .input{
-    width: 90px;
+    width: 120px;
     margin-right: 10px;
 }
 .remainder .reset{
@@ -96,8 +95,8 @@ img{
     color: #187bde;
 }
 .box {
-    width: 60px;
-    height: 180px;
+    width: 220px;
+    height: 60px;
     border-radius: 6px;
     background: #e0ecf9;
     border-bottom-left-radius: 7px;
@@ -107,13 +106,14 @@ img{
     overflow: hidden;
 }
 .s{
-    width: 100%;
-    height: 0%;
-    background-color:  #187bde;
+    height: 100%;
+    width: 0%;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    transition: 0.4s;
+    transition: width 0.8s cubic-bezier(.4,0,.2,1),
+                background-color 0.8s cubic-bezier(.4,0,.2,1);
+    
 }
 
 @media (max-width: 600px) {
@@ -121,10 +121,27 @@ img{
         grid-template-columns: 1fr; 
         margin-top: 50px;
     }
+    .title h2{
+        font-size: 25px;
+    }
+    img{
+        height: 30px;
+    }
 
     .body-sub {
         width: 80%;   
         margin: 20px auto; 
+    }
+    .input{
+        height: 38px;
+        border-radius: 8px;
+    }
+    .buttons {
+        height: 42px;
+        border-radius: 9px;
+    }
+    .remainder-bt {
+        display: block;
     }
 
     .remainder-area {
@@ -135,3 +152,5 @@ img{
         margin: 0 auto;
     }
 }
+
+
