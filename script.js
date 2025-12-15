@@ -40,6 +40,7 @@ buttons.forEach(button => {
             showMessage("🎉 Daily goal completed! Great job!");
             document.querySelector('.water_needed').innerHTML = '0 ml';
             document.querySelector('.percent').textContent = " ";
+             showConfetti();
         }
         saveData();
     });
@@ -159,3 +160,26 @@ function showMessage(text, duration = 2500) {
         message.classList.remove('show')
     }, duration);
 }
+
+let confettiShown = false;
+
+function showConfetti() {
+    if (confettiShown) return;
+    confettiShown = true;
+
+    const container = document.querySelector('.confetti-container');
+
+    for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+
+        container.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 3000);
+    }
+}
+
