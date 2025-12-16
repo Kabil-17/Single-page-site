@@ -13,42 +13,65 @@
         <h2><img src="./images/svg_324070.svg" alt="water-drop">Stay Hydrated</h2>
         <!-- <h3>Track your daily intake</h3> -->
     </div>
-    <div class="body-main">
-        <div class="body-sub">
-            <div class="inputs">
-                <input type="number" placeholder="Weight?" class="input kg">
-                <span>Kg</span>
-                <button class="buttons cal" onclick="calculate()">Calculate</button>
+    <div class="app hidden">
+        <div class="body-main">
+            <div class="body-sub">
+                <div class="streak">
+                    <img src="./images/fire.svg" alt="Streak" class="streak-img">
+                    <span class="streak-counter">0</span>
+                </div>
+                <div class="onboarding">
+                    <h3>Set your daily goal</h3>
+                    <div class="inputs">
+                        <input type="number" placeholder="Weight?" class="input kg">
+                        <span>Kg</span>
+                        <button class="buttons cal">Calculate</button>
+                    </div>
+                </div>
+                <br>
+                <div class="reminder-part">
+                    <div class="bt-input">
+                        <button class="buttons bt" data-value="300">+300ml 🥛 </button>
+                        <button class="buttons bt" data-value="250">+250ml 🥤</button>
+                        <button class="buttons bt" data-value="150">+150ml 🍶</button>
+                    </div>
+                    <div class="remainder">
+                        <h4 class="toggle">Set Remainder</h4>
+                        <div class="reminder-block">
+                            <select type="number" class="input timer" name="">
+                                <option value="" disabled selected hidden>Reminder(min)</option>
+                                <option class="buttons" value="30">30min</option>
+                                <hr>
+                                <option class="buttons" value="60">60min</option>
+                                <hr>
+                                <option class="buttons" value="90">90min</option>
+                                <hr>
+                                <option class="buttons" value="120">120min</option>
+                            </select>
+                            <div class="remainder-bt">
+                                <button class="buttons set">Set</button>
+                                <button class="buttons reset">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="buttons start-over">Start Over</button>
+                </div>
+                <div class="reminder-status"></div>
             </div>
-            <br>
-            <div class="bt-input">
-                <button class="buttons bt" data-value="300">+300ml</button>
-                <button class="buttons bt" data-value="250">+250ml</button>
-                <button class="buttons bt" data-value="200">+200ml</button>
-                <button class="buttons bt" data-value="150">+150ml</button>
-            </div>
-            <div class="remainder">
-                <input type="number" class="input timer" placeholder="Reminder(min)" >
-                <div class="remainder-bt">
-                <button class="buttons set">Set</button>
-                <button class="buttons reset">Reset</button>
+            <div class="body-sub-sec">
+                <div class="remainder-area">
+                    <h4>Remaining Water</h4>
+                    <span class="water_needed">0 ml</span>
+                    <div class="box">
+                        <div class="s"></div>
+                        <span class="percent"></span>
+                    </div>
+                    <p class="message" aria-live="polite"></p>
                 </div>
             </div>
-            <div class="reminder-status"></div>
         </div>
-        <div class="body-sub-sec">
-            <div class="remainder-area">
-                <h4>Remaining Water</h4>
-                <span class="water_needed">0 ml</span>
-                <div class="box">
-                    <div class="s"></div>
-                    <span class="percent"></span>
-                </div>
-                <p class="message" aria-live="polite"></p>
-            </div>
-        </div>
+        <div class="confetti-container"></div>
     </div>
-    <div class="confetti-container"></div>
     <script src="./script.js"></script>
 </body>
 

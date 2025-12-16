@@ -1,30 +1,47 @@
 let totalDrunk = 0;
-let reminderInterval;
+let reminderInterval = null;
 let goal = 0;
 let percent;
+let mileStone = 0;
+
 const water = document.querySelector('.s');
 const weight = document.querySelector('.kg');
 const timerInput = document.querySelector('.timer');
 const reminderStatus = document.querySelector('.reminder-status');
+const onboarding = document.querySelector('.onboarding');
+const app = document.querySelector('.app');
+const reminderPart = document.querySelector('.reminder-part');
 
 
 //localStorage data
 window.addEventListener("load", () => {
     const savedGoal = localStorage.getItem("goal");
     const savedTotal = localStorage.getItem("totalDrunk");
-    const savedFill = localStorage.getItem("fill");
+    const savedMileStone = localStorage.getItem("mileStone");
+    const savedStreak = localStorage.getItem("streakCount");
+    // streak restore
+    if (savedStreak) {
+    document.querySelector(".streak-counter").textContent = savedStreak;
+    }
 
     if (savedGoal && savedTotal) {
         goal = Number(savedGoal);
         totalDrunk = Number(savedTotal);
+        mileStone = Number(savedMileStone);
+
+        onboarding.style.display = "none";
+        reminderPart.style.display = "block";
+
         updateFill();
         updateText();
-        document.querySelector('.bt-input').classList.add('show');
-        document.querySelector('.remainder').classList.add('show');
+        document.querySelector('.percent').textContent = percent + '%';
+    } else {
+        onboarding.style.display = "block";
+        app.classList.add("hidden");
     }
 });
 
-// more buttons
+// water buttons
 const buttons = document.querySelectorAll('.bt');
 buttons.forEach(button => {
     button.addEventListener("click", function () {
@@ -37,14 +54,21 @@ buttons.forEach(button => {
         updateFill();
         updateText();
         if (totalDrunk === 0 && goal) {
-            showMessage("🎉 Daily goal completed! Great job!");
-            document.querySelector('.water_needed').innerHTML = '0 ml';
-            document.querySelector('.percent').textContent = " ";
-             showConfetti();
+            setRemainder.disabled = false;
+            reminderStatus.textContent = '';
+            clearInterval(reminderInterval);
         }
         saveData();
     });
 });
+
+//toggle reminder
+const toggleReminder = document.querySelector(".toggle");
+const reminderBlock = document.querySelector(".reminder-block");
+toggleReminder.addEventListener("click", () => {
+    reminderBlock.style.display = "flex";
+    toggleReminder.style.display = "none";
+})
 
 // Set Reminder
 const setRemainder = document.querySelector('.set');
@@ -55,7 +79,6 @@ setRemainder.addEventListener("click", () => {
         showMessage("Set a valid reminder time!");
         return;
     }
-    clearInterval(reminderInterval);
 
     reminderInterval = setInterval(() => {
         if (totalDrunk > 0) showMessage(`💧 Drink ${totalDrunk} ml to reach your goal`);
@@ -66,9 +89,22 @@ setRemainder.addEventListener("click", () => {
     showMessage('Reminder Set Successfully');
 });
 
-// Reset Button
-const resetBtn = document.querySelector('.reset');
-resetBtn.addEventListener("click", () => {
+//reset button 
+const resetButton = document.querySelector('.reset');
+resetButton.addEventListener("click", () => {
+    clearInterval(reminderInterval);
+    reminderInterval = null;
+
+    timerInput.disabled = false;
+    setRemainder.disabled = false;
+    reminderStatus.textContent = "";
+
+    showMessage("Reminder reset");
+});
+
+// Start Over Button
+const startOver = document.querySelector('.start-over');
+startOver.addEventListener("click", () => {
     if (reminderInterval) {
         clearInterval(reminderInterval);
         reminderInterval = null;
@@ -76,44 +112,56 @@ resetBtn.addEventListener("click", () => {
     goal = 0;
     water.style.width = 0 + "%";
     totalDrunk = 0;
+    mileStone = 0;
+    confettiShown = false;
     document.querySelector('.kg').value = "";
     document.querySelector('.timer').value = "";
     document.querySelector('.percent').textContent = " ";
     updateText();
-    
+
     localStorage.removeItem("goal");
     localStorage.removeItem("totalDrunk");
     localStorage.removeItem("fill");
     localStorage.removeItem("weight");
+    localStorage.removeItem("mileStone");
 
     timerInput.disabled = false;
     setRemainder.disabled = false;
-    calculate.disabled = false;
     reminderStatus.textContent = "";
 
+    onboarding.style.display = "block";
+    reminderPart.style.display = "none";
+
 });
+
+//calculate
 const calculate = document.querySelector('.cal');
-calculate.addEventListener("click",()=> {
+calculate.addEventListener("click", () => {
     if (!weight.value || isNaN(weight.value)) {
         showMessage("Please enter your weight!");
         return;
     }
+
+    goal = Math.floor((Number(weight.value) * 0.033) * 1000);
+    totalDrunk = goal;
+    saveData();
+
+    onboarding.style.display = "none";
+
+    reminderPart.style.display = "block";
+
     clearInterval(reminderInterval);
     reminderInterval = null;
     document.querySelector('.timer').value = "";
 
     water.style.width = 0 + "%";
 
-    document.querySelector('.bt-input').classList.add('show');
-    document.querySelector('.remainder').classList.add('show');
-
-    goal = Math.floor((Number(weight.value) * 0.033) * 1000);
-    totalDrunk = goal;
+    // document.querySelector('.bt-input').classList.add('show');
+    // document.querySelector('.remainder').classList.add('show');
 
     updateText();
+    updateFill();
     weight.value = '';
-    saveData();
-    calculate.disabled = true;
 });
 
 //progress bar
@@ -124,8 +172,9 @@ function updateFill() {
     percent = Math.floor((consumed / goal) * 100);
     document.querySelector('.percent').textContent = percent + "%";
 
-    if (totalDrunk <= 0) water.style.width = 0 + "%";
-    else water.style.width = percent + "%";
+    // if (totalDrunk <= 0) water.style.width = 0 + "%";
+    water.style.width = percent + "%";
+    progressMotivation(percent);
 
     if (percent > 0 && percent <= 30) water.style.backgroundColor = "#ff0000";
     else if (percent > 30 && percent <= 60) water.style.backgroundColor = "#ffa500";
@@ -183,3 +232,76 @@ function showConfetti() {
     }
 }
 
+function progressMotivation(progress){
+    if(progress >= 10 && mileStone < 10){
+        showMessage("Let's get started 💧");
+        mileStone = 10;
+    }
+    else if(progress >= 30 && mileStone < 30){
+        showMessage("Good start! Keep going 👍");
+        mileStone = 30;
+    }
+    else if(progress >= 50 && mileStone < 50){
+        showMessage("🔥 Halfway there!");
+        mileStone = 50;
+    }
+    else if(progress >= 70 && mileStone < 70){
+        showMessage("Almost there 💪");
+        mileStone = 70;
+    }
+    else if(progress >= 85 && mileStone < 85){
+        showMessage("YEAHH! there are just few cups come on🔥🔥");
+        mileStone = 85;
+    }
+    else if(progress >= 100 && mileStone < 100){
+        showConfetti();
+        showMessage("🎉 Daily goal completed! Great job!");
+        mileStone = 100;
+        updateDailyStreak();
+    }
+    localStorage.setItem("mileStone",mileStone);
+}
+
+//ripple effect
+document.querySelectorAll('.buttons').forEach(button => {
+    button.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
+        ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
+
+        button.appendChild(ripple);
+
+        ripple.addEventListener('animationend', () => {
+            ripple.remove();
+        });
+    });
+});
+
+//streak logic
+function updateDailyStreak(){
+    const today = new Date().toISOString().split('T')[0];
+    let streak = Number(localStorage.getItem("streakCount")||0);
+    const lastdate = localStorage.getItem("lastCompletedDate");
+
+    if(!lastdate){
+        streak = 1;
+    }else{
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate()-1);
+        const yDate = yesterday.toISOString().split('T')[0];
+
+        if((lastdate === today)) return 
+        else if(lastdate === yDate) streak++;
+        else streak = 1;
+    }
+    document.querySelector(".streak-counter").textContent = streak;
+    localStorage.setItem("streakCount",streak);
+    localStorage.setItem("lastCompletedDate",today);
+
+}
